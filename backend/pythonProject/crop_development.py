@@ -134,5 +134,10 @@ def scatter_crop_development(data):
 
 if __name__ == '__main__':
   #custom_df = get_and_create_custom_dataframe(-58.737, -29.025, 7, 5, 76, 90, "MAIZE", {"name": "SYN897"})
-  custom_df = get_and_create_custom_dataframe(-58.737, -29.025, 5, 10.0,30, 80)
+  custom_df = get_and_create_custom_dataframe(-58.737, -29.025, 5.0, 10.0, 30.0, 80)
+  # long, lat
+  # depth_val  1.0 >= x <= 9.0 cm
+  # density_val 4.0 >= x <= 14.0 plants/m2
+  # row_spacing_val 20.0 >= x <= 100.0 cm
+  # field_water_capacity_val 1 >= x <= 100 percentage
   print(custom_df)
