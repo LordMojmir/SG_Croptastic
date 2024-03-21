@@ -20,7 +20,9 @@ import "@eox/map/dist/eox-map.js"
       :layers="[
         { type: 'Tile', properties: { id: 'NATURAL-COLOR' }, source: { type: 'TileWMS', url: 'https://services.sentinel-hub.com/ogc/wms/afdf0697-ed64-430a-91c3-74b1749cf1f1', params: { LAYERS: 'TRUE-COLOR-S2L2A', TIME: '2024-01-20/2024-01-21', WIDTH:'50', HEIGHT: '50', MAXCC: '20' } } }
       ]"
+      class="map"
    style="width: 400px; height: 300px;"
+
   ></eox-map>
 
 
@@ -32,9 +34,10 @@ import "@eox/map/dist/eox-map.js"
   height: 70vh;
   padding: 0.5rem;
 }
- eox-map-compare,
- eox-map {
-   width: 100%;
-   height: 300px;
+
+ .map{
+   width: 400px;
+   height: 400px;
+   padding: 0.5rem;
  }
 </style>
