@@ -1,19 +1,22 @@
 import http.client
 import json
-from dotenv import load_dotenv
 import os
 import pandas as pd
 from datetime import datetime
 import matplotlib
 matplotlib.use('Agg')  # Use the Anti-Grain Geometry non-interactive backend suited for scripts
 import matplotlib.pyplot as plt
-import plotly.express as px
 
-def get_crop_prediction(long, lat, depth_val, density_val, row_spacing_val, field_water_capacity_val, crop =  "CORN", crop_variety = {"relative_maturity":"RM114"}):
-  load_dotenv()
+
+def get_crop_prediction(long, lat, depth_val, density_val, row_spacing_val, field_water_capacity_val):
+
+  crop = "MAIZE"
+  crop_variety = {"name": "SYN897"}
+
+  AUTH_TOKEN_BEARER = "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImNyb3B3aXNlLWJhc2UtdG9rZW4tcHViLWtleSJ9.eyJzdWIiOiIwM2M3Mzg0Yi0zNGEzLTQ2NWItODc5MS0zZjJkYWIzOWNhOWQiLCJpc191c2luZ19yYmFjIjp0cnVlLCJhdWQiOlsic3RyaWRlci1iYXNlIl0sInVzZXJfbmFtZSI6ImhvcjIxMDU5M0BzcGVuZ2VyZ2Fzc2UuYXQiLCJzY29wZSI6WyJyZWFkIiwid3JpdGUiXSwiaXNzIjoiY3JvcHdpc2UtYmFzZS1zdHJpeCIsImV4cCI6MTcxMzY2MzYzMSwiYXV0aG9yaXRpZXMiOlsiQVNTSUdORUVTX1dSSVRFIiwiUFVSQ0hBU0VfT1JERVJTX1JFQUQiLCJBU1NJR05FRVNfUkVBRCIsIkJVREdFVFNfV1JJVEUiLCJGQVJNU0hPVFNfUkVBRCIsIlRFTVBMQVRFU19XUklURSIsIlZFTkRPUlNfV1JJVEUiLCJQUk9QRVJUSUVTX1dSSVRFIiwiRklFTERTX1dSSVRFIiwiRVFVSVBNRU5UU19SRUFEIiwiU1VQUExJRVNfV1JJVEUiLCJWRU5ET1JTX1JFQUQiLCJQUk9QRVJUSUVTX1JFQUQiLCJSRVZFTlVFU19SRUFEIiwiSU5GT1JNQVRJT05fV1JJVEUiLCJQUk9EVUNUU19XUklURSIsIlNFQVNPTlNfUkVBRCIsIlNFQVNPTl9BUkVBX1dSSVRFIiwiUFVSQ0hBU0VfT1JERVJTX1dSSVRFIiwiRVFVSVBNRU5UU19XUklURSIsIlRFTVBMQVRFU19SRUFEIiwiUkVQT1JUU19XUklURSIsIlRBU0tTX1dSSVRFIiwiV0FSRUhPVVNFU19SRUFEIiwiRVhQRU5TRVNfUkVBRCIsIkZJRUxEU19SRUFEIiwiU1VQUExJRVNfUkVBRCIsIldBUkVIT1VTRVNfV1JJVEUiLCJPUkdfUkVBRCIsIlBST0RVQ1RTX1JFQUQiLCJUQVNLU19SRUFEIiwiRVhQRU5TRVNfV1JJVEUiLCJTRUFTT05TX1dSSVRFIiwiU0VBU09OX0FSRUFfUkVBRCIsIlJFUE9SVFNfUkVBRCIsIlJFVkVOVUVTX1dSSVRFIiwiQlVER0VUU19SRUFEIl0sImp0aSI6ImE0MjU4YTAzLTA1MzMtNGViYy04ZjIxLTAxZTYyZTc3MDRhYyIsImNsaWVudF9pZCI6Ijk2NjAwMDY4MzQ4MTQ1OWRiMzRiMDRhM2YxZWY2ZjNlIn0.azxDVafEAi1UNWU_RZ2Wv6q8J_WZKi5AIqZ1MEd8xW6giZ-fKai1gFWwKxERSBlR182ZpoPMSNokVyoYvQcxQ65e2yfcsms-jgoR9T3faR6nGTot98bLVcL_PatvG1Vq_HPY1G1EMtmFLogbrfbRDuCN6H8Q8BEwvwb8Yh7V6s7BxscvE5sqJzycXXSoZty5Zireize9foWoNlVqPTQdim67lo1B3I7UyHtc6UCoeCCSslIu1dfeqAf4KXTAzSgk9q5u3BvDyoh2KPSmlnPnPkVEMQ-_AENdus5piQpuHI8mqcGMmjazogin6gFZVMtZ9JrkH9lv9KcWSo29uJ0Nzg"
 
   # Get the authentication token from the environment
-  auth_token = os.getenv('AUTH_TOKEN_BEARER')
+  auth_token = AUTH_TOKEN_BEARER
   planted_day = "2023-10-28"
 
   conn = http.client.HTTPSConnection("api.insights.cropwise.com")
@@ -108,10 +111,8 @@ def create_custom_dataframe(data):
     return df
 
 
-def get_and_create_custom_dataframe(long, lat, depth_val, density_val, row_spacing_val, field_water_capacity_val,
-                                    crop="CORN", crop_variety={"relative_maturity": "RM114"}):
-  result = get_crop_prediction(long, lat, depth_val, density_val, row_spacing_val, field_water_capacity_val, crop,
-                               crop_variety)
+def get_and_create_custom_dataframe(long, lat, depth_val, density_val, row_spacing_val, field_water_capacity_val):
+  result = get_crop_prediction(long, lat, depth_val, density_val, row_spacing_val, field_water_capacity_val)
   custom_df = create_custom_dataframe(result)
   return custom_df.values.tolist()
 
@@ -132,14 +133,6 @@ def scatter_crop_development(data):
 
 
 if __name__ == '__main__':
-  custom_df = get_and_create_custom_dataframe(-58.737, -29.025, 7, 5, 76, 90, "MAIZE", {"name": "SYN897"})
-  # print(custom_df.to_string(index=False, header=False))
-
-  # array_without_header = custom_df.values.tolist()
-  # print(array_without_header)
-  # scatter_crop_development(custom_df)
-  # # return growth_stage_dates
-  # result = get_crop_prediction(-58.737, -29.025, 7, 5, 76, 90, "MAIZE", {"name":"SYN897"})
-  # print(result)
-  # custom_df = create_custom_dataframe(result)
-  # print(custom_df)
+  #custom_df = get_and_create_custom_dataframe(-58.737, -29.025, 7, 5, 76, 90, "MAIZE", {"name": "SYN897"})
+  custom_df = get_and_create_custom_dataframe(-58.737, -29.025, 5, 10.0,30, 80)
+  print(custom_df)
