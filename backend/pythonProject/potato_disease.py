@@ -1,5 +1,6 @@
 import http.client
 import os
+import json  # Added import for JSON parsing
 from dotenv import load_dotenv
 
 
@@ -20,9 +21,18 @@ def get_potato_disease_risk(longitude, latitude, relative_humidity, start_date, 
     conn.request("GET", endpoint, '', headers)
     res = conn.getresponse()
     data = res.read()
+    all_data = data.decode("utf-8")
 
     # Return the decoded data
-    return data.decode("utf-8")
+    result_data = json.loads(all_data)
+    result_dict = {}
+
+    for entry in result_data:
+        date = entry['date']
+        risk_value = entry['value']
+        result_dict[date] = risk_value
+
+    return result_dict
 
 
 # Example usage
@@ -36,3 +46,4 @@ if __name__ == '__main__':
 
     result = get_potato_disease_risk(longitude, latitude, relative_humidity, start_date, end_date)
     print(result)
+
