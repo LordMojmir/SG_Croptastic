@@ -1,12 +1,11 @@
 import http.client
 import os
 import json  # Added import for JSON parsing
-from dotenv import load_dotenv
 
 
 def get_potato_disease_risk(longitude, latitude, relative_humidity, start_date, end_date, model_id='EarlyBlight'):
-    load_dotenv()
-    forecast_API = os.getenv('AUTH_FORECAST_API')
+    AUTH_FORECAST_API = "f48f7d2e-97e6-413a-bc95-cd13e425f478"
+    forecast_API = AUTH_FORECAST_API
 
     conn = http.client.HTTPSConnection("services.cehub.syngenta-ais.com")
     headers = {
@@ -31,6 +30,8 @@ def get_potato_disease_risk(longitude, latitude, relative_humidity, start_date, 
         date = entry['date']
         risk_value = entry['value']
         result_dict[date] = risk_value
+
+    #    result_data = json.loads(result_dict)
 
     return result_dict
 

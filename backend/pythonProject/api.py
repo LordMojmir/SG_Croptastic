@@ -4,6 +4,7 @@ from flask import Flask, request, jsonify
 from sentinelhub import BBox, CRS
 
 from crop_development import get_and_create_custom_dataframe
+from potato_disease import get_potato_disease_risk
 from satellite_images import satellite_data
 from sustainability import get_biodiversity
 
@@ -69,6 +70,28 @@ def get_crop_development():
         print(data)
         # Return the data as JSON
         return jsonify({"crop_development_data": data})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+
+@app.route('/get_potato_disease_risk', methods=['GET'])
+def get_potato_disease_risk_route():
+    """
+    Flask route to get potato disease risk data.
+    """
+    try:
+        # Extract parameters from the request query string
+        long = float(request.args.get('long'))
+        lat = float(request.args.get('lat'))
+        relative_humidity = int(request.args.get('relative_humidity'))
+        start_date = request.args.get('start_date')
+        end_date = request.args.get('end_date')
+
+        # Call the function to get potato disease risk data
+        result = get_potato_disease_risk(long, lat, relative_humidity, start_date, end_date)
+
+        # Directly return the data as JSON
+        return jsonify({"potato_disease_risk_data": result})
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
