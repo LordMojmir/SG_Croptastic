@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
-
-from experiments.landcover import get_land_cover_label_percentages
+from sentinelhub import BBox, CRS
 from satellite_images import satellite_data
+from sustainability import get_biodiversity
 
 app = Flask(__name__)
 
@@ -32,18 +32,11 @@ def get_land_cover_percentages():
     Flask route that takes a 'bbox' parameter and returns land cover label percentages.
     """
     # Extract 'bbox' from the query parameters and convert it to a tuple of tuples
-    bbox = request.args.get('bbox')
-    if not bbox:
-        return jsonify({"error": "Missing 'bbox' query parameter"}), 400
-
-    try:
-        # Convert the bbox string to a tuple of tuples
-        bbox = tuple(map(lambda x: tuple(map(float, x.split(','))), bbox.split(';')))
-    except ValueError:
-        return jsonify({"error": "Invalid 'bbox' format. Please use 'min_lon,min_lat;max_lon,max_lat'."}), 400
+    #bbox = request.args.get('bbox')
+    bbox = BBox([3.367310, 47.315620, 3.690033, 47.403041], crs=CRS.WGS84)
 
     # Call the get_land_cover_label_percentages function
-    percentages = get_land_cover_label_percentages(bbox)
+    percentages = get_biodiversity(bbox)
 
     # Return the land cover label percentages
     return jsonify(percentages)

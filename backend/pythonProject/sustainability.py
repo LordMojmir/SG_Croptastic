@@ -1,30 +1,19 @@
 import numpy as np
 from sentinelhub import SHConfig, SentinelHubRequest, DataCollection, MimeType, CRS, BBox, bbox_to_dimensions
-import matplotlib.pyplot as plt
-
-# Configure your Sentinel Hub account
-CLIENT_ID = "90b037f9-9396-4d29-9ebc-38bc9f76f747"   # Replace with your Client ID
-CLIENT_SECRET = "GUwEX5xKIdEe2NX5qcktX04FMOejeUrX" # Replace with your Client Secret
-
-config = SHConfig()
-if CLIENT_ID and CLIENT_SECRET:
-    config.sh_client_id = CLIENT_ID
-    config.sh_client_secret = CLIENT_SECRET
-
-# Define your area of interest (AOI)
-resolution = 10.0  # Sentinel-2 resolution in meters
 
 
-bbox = BBox([3.367310,47.315620,3.690033,47.403041], crs=CRS.WGS84)  # Replace with your bounding box coordinates
-time_interval = ('2020-01-01', '2020-12-31')  # Replace with your desired time interval
-size = bbox_to_dimensions(bbox, resolution=resolution)
+def fetch_cnes_land_cover_labels(bbox):
+    resolution = 10.0
+    time_interval = ('2020-01-01', '2020-12-31')
+    CLIENT_ID = "90b037f9-9396-4d29-9ebc-38bc9f76f747"
+    CLIENT_SECRET = "GUwEX5xKIdEe2NX5qcktX04FMOejeUrX"
+    bbox = BBox([3.367310, 47.315620, 3.690033, 47.403041], crs=CRS.WGS84)
+    size = bbox_to_dimensions(bbox, resolution=resolution)
+    config = SHConfig()
+    if CLIENT_ID and CLIENT_SECRET:
+        config.sh_client_id = CLIENT_ID
+        config.sh_client_secret = CLIENT_SECRET
 
-
-# Define the Evalscript
-
-
-# Fetch CNES Land Cover Labels
-def fetch_cnes_land_cover_labels(bbox, time_interval, config):
     request = SentinelHubRequest(
         evalscript=CNES_LABEL_EVALSCRIPT,
         input_data=[
@@ -39,20 +28,54 @@ def fetch_cnes_land_cover_labels(bbox, time_interval, config):
         config=config,
     )
     data = request.get_data()
-    return data[0]  # Assuming you're interested in the first response
+    return data[0]
 
 
-# Fetch the data
-land_cover_data = fetch_cnes_land_cover_labels(bbox, time_interval, config)
-
-# Calculate the percentages of occurrence for each label
-(unique, counts) = np.unique(land_cover_data, return_counts=True)
-percentages = dict(zip(unique, counts * 100 / counts.sum()))
-
-# Define the CNES Label Map (full version, not simplified)
+def get_biodiversity(bbox: BBox):
+    land_cover_data = fetch_cnes_land_cover_labels(bbox)
+    (unique, counts) = np.unique(land_cover_data, return_counts=True)
+    percentages = {CNES_LABEL_MAP[key]: value for key, value in zip(unique, counts * 100 / counts.sum())}
+    return percentages
 
 
-# Print the percentages
-for label, percentage in percentages.items():
-    label_name = CNES_LABEL_MAP.get(label, "Unknown")
-    print(f"{label_name}: {percentage:.2f}%")
+CNES_LABEL_MAP = {
+        1: "Dense built-up area",
+        2: "Diffuse built-up area",
+        3: "Industrial and commercial areas",
+        4: "Roads",
+        5: "Oilseeds (Rapeseed)",
+        6: "Straw cereals (Wheat, Triticale, Barley)",
+        7: "Protein crops (Beans / Peas)",
+        8: "Soy",
+        9: "Sunflower",
+        10: "Corn",
+        11: "Rice",
+        12: "Tubers/roots",
+        13: "Grasslands",
+        14: "Orchards and fruit growing",
+        15: "Vineyards",
+        16: "Hardwood forest",
+        17: "Softwood forest",
+        18: "Natural grasslands and pastures",
+        19: "Woody moorlands",
+        20: "Natural mineral surfaces",
+        21: "Beaches and dunes",
+        22: "Glaciers and eternal snows",
+        23: "Water"
+    }
+
+CNES_LABEL_EVALSCRIPT = """
+    //VERSION=3
+    function setup() {
+        return {
+            input: [{"bands": ["OCS"], "units": "DN"}],
+            output: {bands: 1, sampleType: "UINT8"}
+        };
+    }
+    function evaluatePixel(sample) {
+        return [sample.OCS];
+    }
+    """
+
+
+
