@@ -1,0 +1,38 @@
+import http.client
+import os
+from dotenv import load_dotenv
+
+
+def get_potato_disease_risk(longitude, latitude, relative_humidity, start_date, end_date, model_id='EarlyBlight'):
+    load_dotenv()
+    forecast_API = os.getenv('AUTH_FORECAST_API')
+
+    conn = http.client.HTTPSConnection("services.cehub.syngenta-ais.com")
+    headers = {
+        'accept': '/',
+        'ApiKey': forecast_API
+    }
+
+    # Construct the API endpoint with query parameters
+    endpoint = f"/api/DiseaseRisk/PotatoRisk?latitude={latitude}&longitude={longitude}&startDate={start_date}&endDate={end_date}&modelId={model_id}&relativeHumidity={relative_humidity}"
+
+    # Send the request
+    conn.request("GET", endpoint, '', headers)
+    res = conn.getresponse()
+    data = res.read()
+
+    # Return the decoded data
+    return data.decode("utf-8")
+
+
+# Example usage
+if __name__ == '__main__':
+    # Define your parameters here
+    longitude = 7
+    latitude = 47
+    relative_humidity = 60  # Example humidity level
+    start_date = '2024-03-21'
+    end_date = '2024-03-24'
+
+    result = get_potato_disease_risk(longitude, latitude, relative_humidity, start_date, end_date)
+    print(result)
