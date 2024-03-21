@@ -3,7 +3,7 @@ import json
 from flask import Flask, request, jsonify
 from sentinelhub import BBox, CRS
 
-from backend.pythonProject.crop_development import get_and_create_custom_dataframe
+from crop_development import get_and_create_custom_dataframe
 from satellite_images import satellite_data
 from sustainability import get_biodiversity
 
@@ -62,9 +62,11 @@ def get_crop_development():
         crop = request.args.get('crop', default="CORN")
         crop_variety = request.args.get('crop_variety', default='{"relative_maturity": "RM114"}')
 
-        # Call the function to get and create custom dataframe
-        data = get_and_create_custom_dataframe(long, lat, depth_val, density_val, row_spacing_val, field_water_capacity_val, crop, json.loads(crop_variety))
+        print(long, lat, depth_val, density_val, row_spacing_val, field_water_capacity_val)
 
+        # Call the function to get and create custom dataframe
+        data = get_and_create_custom_dataframe(long, lat, depth_val, density_val, row_spacing_val, field_water_capacity_val)
+        print(data)
         # Return the data as JSON
         return jsonify({"crop_development_data": data})
     except Exception as e:
