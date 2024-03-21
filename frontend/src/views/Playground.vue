@@ -19,13 +19,14 @@ const showPredictions = ref(false);
 
 async function getData(){
   showPredictions.value = false;
-  const response = await bioDataClient.get('/route', {
+  const response = await bioDataClient.post('/get_crop_development', {
     params: {
-      long: geoDataStore.centre[0],
-      lat: geoDataStore.centre[1],
+      long: "" + geoDataStore.centre[0],
+      lat:  "" + geoDataStore.centre[1],
       depth_val: refParameters.plantDepth.value,
       density_val: refParameters.plantDensity.value,
       row_spacing_val: refParameters.rowSpacing.value,
+      field_water_capacity_val: refParameters.waterCapacity.value,
     }
   });
   if(response.status == 200){
@@ -42,20 +43,18 @@ async function getData(){
       <eox-map :layers='[{"type":"Tile","source":{"type":"OSM"}}]' id="primary" class="h-80 w-full"></eox-map>
     </div>
     <div class="grid grid-cols-3 items-center gap-4 text-gray-100 w-1/3 justify-between mr-0 m-auto p-2 text-text-300 content-center">
-      <label for="plantDepth">Plant Depth</label>
-      <input type="range" min="1" max="100" v-model="refParameters.plantDepth.value" class="w-full fill-accent-500 rounded-full" name="plantDepth">
-      <p>{{ refParameters.plantDepth.value }}</p>
-      <label for="plantDensity">Plant Density</label>
-      <input type="range" min="1" max="100" v-model="refParameters.plantDensity.value" class="slider" name="plantDensity">
-      <p>{{ refParameters.plantDensity.value }}</p>
-      <label for="rowSpacing">Row Spacing</label>
-      <input type="range" min="1" max="100" v-model="refParameters.rowSpacing.value" class="slider" name="rowSpacing">
-      <p>{{ refParameters.rowSpacing.value }}</p>
-      <label for="waterCapacity">Water Capacity</label>
+      <label for="plantDepth">Plant Depth (cm)</label>
+      <input type="range" min="1" max="9" v-model="refParameters.plantDepth.value" class="w-full fill-accent-500 rounded-full" name="plantDepth">
+      <p>{{ refParameters.plantDepth.value }}cm</p>
+      <label for="plantDensity">Plant Density (plants/m²)</label>
+      <input type="range" min="4.0" max="14" step="0.1" v-model="refParameters.plantDensity.value" class="slider" name="plantDensity">
+      <p>{{ refParameters.plantDensity.value }}cm</p>
+      <label for="rowSpacing">Row Spacing (cm)</label>
+      <input type="range" min="20" max="100" v-model="refParameters.rowSpacing.value" class="slider" name="rowSpacing">
+      <p>{{ refParameters.rowSpacing.value }}cm</p>
+      <label for="waterCapacity">Water Capacity (%)</label>
       <input type="range" min="1" max="100" v-model="refParameters.waterCapacity.value" class="slider" name="waterCapacity">
-      <p>{{ refParameters.waterCapacity.value }}</p>
-      <label for="isIrrigated">Water crops: </label>
-      <input type="checkbox" name="isIrrigated" v-model="refParameters.isIrrigated.value" class="rounded-2xl">
+      <p>{{ refParameters.waterCapacity.value }}%</p>
       <div></div>
       <button class="bg-primary-700 rounded-xl shadow-md px-3 py-2 text-text-100"
        @click="getData"

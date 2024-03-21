@@ -12,23 +12,25 @@ onMounted(() => {
   if(data.length == 0){
     return
   }
+  const cleanData = data.filter(row => row[0] != 'E')
   let labels = [];
-  for(let i = 0; i < data[data.length - 1][1]; i++){
+  for(let i = 0; i < cleanData[cleanData.length - 1][1]; i++){
     labels.push(i);
   }
-
   const filledData = [];
   let previousLevel = data[0][0];
-  for (let day = 0; day <= data[data.length - 1][1]; day++) {
+  for (let day = 0; day <= cleanData[cleanData.length - 1][1]; day++) {
     let value = previousLevel;
-    for (let i = 0; i < data.length; i++) {
-      if (data[i][1] === day) {
-        value = data[i][0];
+    for (let i = 0; i < cleanData.length; i++) {
+      if (cleanData[i][1] === day) {
+        value = cleanData[i][0];
       }
     }
     filledData.push([value, day]);
     previousLevel = value;
   }
+
+  console.log(labels)
 
   new Chart(
       document.getElementById('growthPredictionGraph'),
