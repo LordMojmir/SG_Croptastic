@@ -51,7 +51,7 @@ const handleDrawUpdate = ($event) => {
   margin-right: 10vw;
   margin-left: 10vw;
   margin-top: 100px;
-
+}
 #primary {
   width: 80vw;
   height: 300px;

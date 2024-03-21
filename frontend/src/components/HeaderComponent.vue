@@ -12,7 +12,7 @@
 <style scoped>
 .header {
   display: flex;
-  padding: 1rem
+  padding: 1rem;
   align-items: center;
   background-color: var(--background-700);
   justify-content: space-between;
