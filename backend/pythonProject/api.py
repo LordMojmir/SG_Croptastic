@@ -7,10 +7,10 @@ from crop_development import get_and_create_custom_dataframe
 from potato_disease import get_potato_disease_risk
 from satellite_images import satellite_data
 from sustainability import get_biodiversity
+from flask_cors import CORS
 
 app = Flask(__name__)
-
-
+cors = CORS(app)
 @app.route('/fetch_satellite_images', methods=['GET'])
 def fetch_satellite_images():
     """

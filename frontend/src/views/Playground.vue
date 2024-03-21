@@ -19,7 +19,7 @@ const showPredictions = ref(false);
 
 async function getData(){
   showPredictions.value = false;
-  const response = await bioDataClient.post('/get_crop_development', {
+  const response = await bioDataClient.get('/get_crop_development', {
     params: {
       long: "" + geoDataStore.centre[0],
       lat:  "" + geoDataStore.centre[1],
