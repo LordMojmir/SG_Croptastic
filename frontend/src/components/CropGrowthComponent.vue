@@ -4,7 +4,6 @@ import "@eox/timecontrol"
 import {useFeatureStore} from "@/stores/boundingBox";
 
 var geoJsonStore = useFeatureStore();
-console.log(geoJsonStore.feature)
 </script>
 
 <template>
