@@ -2,15 +2,11 @@
   import BoundingBoxMap from "@/components/BoundingBoxMap.vue";
   import HeaderComponent from "@/components/HeaderComponent.vue";
   import CropGrowthComponent from "@/components/CropGrowthComponent.vue";
+  import HomeView from "@/views/HomeView.vue";
 </script>
 
 <template>
   <HeaderComponent></HeaderComponent>
-  <BoundingBoxMap></BoundingBoxMap>
-  <CropGrowthComponent></CropGrowthComponent>
-  <RouterLink to="/playground">
-    <button class="bg-primary-700 rounded-xl shadow-md px-3 py-2 text-text-100">Go to playground</button>
-  </RouterLink>
   <RouterView />
 </template>
 
