@@ -137,7 +137,7 @@ if __name__ == '__main__':
 
   # array_without_header = custom_df.values.tolist()
   # print(array_without_header)
-  scatter_crop_development(custom_df)
+  # scatter_crop_development(custom_df)
   # # return growth_stage_dates
   # result = get_crop_prediction(-58.737, -29.025, 7, 5, 76, 90, "MAIZE", {"name":"SYN897"})
   # print(result)
