@@ -2,13 +2,37 @@
 import "@eox/map"
 import "@eox/timecontrol"
 import {computed, ref} from "vue";
+import { predictionDataStore } from "@/stores/predictionDataStore"
+import GrowthPredictionGraph from "@/components/GrowthPredictionGraph.vue";
+import {useFeatureStore} from "@/stores/boundingBox"
+import {storeToRefs} from "pinia";
+import bioDataClient from "@/api/bioDataClient";
 
-const plantDepth = ref(10);
-const plantDensity = ref(1);
-const rowSpacing = ref(23);
-const waterCapacity = ref(89);
-const isIrrigated = ref(false);
+const parametersStore = predictionDataStore();
+const refParameters = storeToRefs(parametersStore);
 
+const geoDataStore = useFeatureStore();
+
+let data;
+
+const showPredictions = ref(false);
+
+async function getData(){
+  showPredictions.value = false;
+  const response = await bioDataClient.get('/route', {
+    params: {
+      long: geoDataStore.centre[0],
+      lat: geoDataStore.centre[1],
+      depth_val: refParameters.plantDepth.value,
+      density_val: refParameters.plantDensity.value,
+      row_spacing_val: refParameters.rowSpacing.value,
+    }
+  });
+  if(response.status == 200){
+    data = response.data;
+    showPredictions.value = true;
+  }
+}
 </script>
 
 <template>
@@ -19,24 +43,26 @@ const isIrrigated = ref(false);
     </div>
     <div class="grid grid-cols-3 items-center gap-4 text-gray-100 w-1/3 justify-between mr-0 m-auto p-2 text-text-300 content-center">
       <label for="plantDepth">Plant Depth</label>
-      <input type="range" min="1" max="100" v-model="plantDepth" class="w-full fill-accent-500 rounded-full" name="plantDepth">
-      <p>{{ plantDepth }}</p>
+      <input type="range" min="1" max="100" v-model="refParameters.plantDepth.value" class="w-full fill-accent-500 rounded-full" name="plantDepth">
+      <p>{{ refParameters.plantDepth.value }}</p>
       <label for="plantDensity">Plant Density</label>
-      <input type="range" min="1" max="100" v-model="plantDensity" class="slider" name="plantDensity">
-      <p>{{plantDensity}}</p>
+      <input type="range" min="1" max="100" v-model="refParameters.plantDensity.value" class="slider" name="plantDensity">
+      <p>{{ refParameters.plantDensity.value }}</p>
       <label for="rowSpacing">Row Spacing</label>
-      <input type="range" min="1" max="100" v-model="rowSpacing" class="slider" name="rowSpacing">
-      <p>{{ rowSpacing }}</p>
+      <input type="range" min="1" max="100" v-model="refParameters.rowSpacing.value" class="slider" name="rowSpacing">
+      <p>{{ refParameters.rowSpacing.value }}</p>
       <label for="waterCapacity">Water Capacity</label>
-      <input type="range" min="1" max="100" v-model="waterCapacity" class="slider" name="waterCapacity">
-      <p>{{ waterCapacity }}</p>
+      <input type="range" min="1" max="100" v-model="refParameters.waterCapacity.value" class="slider" name="waterCapacity">
+      <p>{{ refParameters.waterCapacity.value }}</p>
       <label for="isIrrigated">Water crops: </label>
-      <input type="checkbox" name="isIrrigated" v-model="isIrrigated" class="rounded-2xl">
+      <input type="checkbox" name="isIrrigated" v-model="refParameters.isIrrigated.value" class="rounded-2xl">
       <div></div>
-      <button class="bg-primary-700 rounded-xl shadow-md px-3 py-2 text-text-100">Try it out!</button>
+      <button class="bg-primary-700 rounded-xl shadow-md px-3 py-2 text-text-100"
+       @click="getData"
+      >Try it out!</button>
     </div>
-
   </div>
+  <GrowthPredictionGraph v-if="showPredictions" :data="data" ></GrowthPredictionGraph>
 
 </template>
 
