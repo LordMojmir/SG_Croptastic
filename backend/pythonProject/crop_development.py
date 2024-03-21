@@ -113,9 +113,9 @@ def get_and_create_custom_dataframe(long, lat, depth_val, density_val, row_spaci
   result = get_crop_prediction(long, lat, depth_val, density_val, row_spacing_val, field_water_capacity_val, crop,
                                crop_variety)
   custom_df = create_custom_dataframe(result)
-  return custom_df
+  return custom_df.values.tolist()
 
-def scatter_crop_develpment(data):
+def scatter_crop_development(data):
   x = [int(point[0]) for point in data]
   y = [point[1] for point in data]
 
@@ -123,8 +123,8 @@ def scatter_crop_develpment(data):
   plt.figure(figsize=(10, 5))
   plt.scatter(y, x)  # Note the change here for the flipped axes
   plt.plot(y, x, linestyle='-', marker='o')  # Connect the points with a line with axes flipped
-  plt.title('Scatter Plot of Crop Development with Flipped Axes')
-  plt.xlabel('Value')
+  plt.title('Scatter Plot of Crop Development')
+  plt.xlabel('Days from Planting Date')
   plt.ylabel('Stage')
   plt.grid(True)
   # plt.show()
@@ -133,11 +133,11 @@ def scatter_crop_develpment(data):
 
 if __name__ == '__main__':
   custom_df = get_and_create_custom_dataframe(-58.737, -29.025, 7, 5, 76, 90, "MAIZE", {"name": "SYN897"})
-  print(custom_df.to_string(index=False, header=False))
+  # print(custom_df.to_string(index=False, header=False))
 
-  array_without_header = custom_df.values.tolist()
-  print(array_without_header)
-  scatter_crop_develpment(array_without_header)
+  # array_without_header = custom_df.values.tolist()
+  # print(array_without_header)
+  scatter_crop_development(custom_df)
   # # return growth_stage_dates
   # result = get_crop_prediction(-58.737, -29.025, 7, 5, 76, 90, "MAIZE", {"name":"SYN897"})
   # print(result)
