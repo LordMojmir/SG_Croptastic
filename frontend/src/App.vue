@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import BoundingBoxMap from "@/components/BoundingBoxMap.vue";
   import HeaderComponent from "@/components/HeaderComponent.vue";
-  import CropGrowthComponent from "@/components/CropGrowthComponent.vue";
+  import CropGrowthComponent from "@/components/MethaneDetectionomp.vue";
   import HomeView from "@/views/HomeView.vue";
 </script>
 
