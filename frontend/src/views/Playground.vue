@@ -40,7 +40,7 @@ async function getData(){
 
   <div class="w-[100%] flex flex-growth p-3 gap-2">
     <div class="w-2/3 h-max">
-      <eox-map :layers='[{"type":"Tile","source":{"type":"OSM"}}]' id="primary" class="h-80 w-full"></eox-map>
+      <eox-map :layers='[{"type":"Tile","source":{"type":"OSM"}}]' :center="geoDataStore.centre" zoom="13" id="primary" class="h-80 w-full"></eox-map>
     </div>
     <div class="grid grid-cols-3 items-center gap-4 text-gray-100 w-1/3 justify-between mr-0 m-auto p-2 text-text-300 content-center">
       <label for="plantDepth">Plant Depth (cm)</label>

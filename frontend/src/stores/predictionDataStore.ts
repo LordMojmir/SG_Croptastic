@@ -1,7 +1,7 @@
 import {defineStore} from "pinia";
 
 export const predictionDataStore = defineStore('predictionParams', {
-    state: () => ({ plantDepth: 0, plantDensity: 0, rowSpacing: 0, waterCapacity: 0, isIrrigated: false }),
+    state: () => ({ plantDepth: 1, plantDensity: 4, rowSpacing: 20, waterCapacity: 1, isIrrigated: false }),
     getters: {},
     actions: {},
 })
