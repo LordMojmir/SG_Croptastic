@@ -18,7 +18,7 @@ def get_crop_prediction(long, lat, depth_val, density_val, row_spacing_val, fiel
 
   # Get the authentication token from the environment
   auth_token = AUTH_TOKEN_BEARER
-  planted_day = "2023-10-28"
+  planted_day = "2023-06-01"
 
   conn = http.client.HTTPSConnection("api.insights.cropwise.com")
   payload = json.dumps({
@@ -71,8 +71,8 @@ def get_crop_prediction(long, lat, depth_val, density_val, row_spacing_val, fiel
             "end_date": "2022-05-09T00:00:00Z"
           },
           "forecast": {
-            "start_date": "2023-11-07T00:00:00Z",
-            "end_date": "2023-12-02T00:00:00Z"
+            "start_date": "2023-06-01T00:00:00Z",
+            "end_date": "2023-06-14T00:00:00Z"
           }
         }
       }
@@ -143,8 +143,8 @@ def scatter_crop_development(data):
 
   # Plotting the data with axes flipped
   plt.figure(figsize=(10, 5))
-  plt.scatter(y, x)  # Note the change here for the flipped axes
-  plt.plot(y, x, linestyle='-', marker='o')  # Connect the points with a line with axes flipped
+  plt.scatter(y, x)
+  plt.plot(y, x, linestyle='-', marker='o')
   plt.title('Scatter Plot of Crop Development')
   plt.xlabel('Days from Planting Date')
   plt.ylabel('Stage')
@@ -154,8 +154,35 @@ def scatter_crop_development(data):
 
 
 if __name__ == '__main__':
+<<<<<<< Updated upstream
   #custom_df = get_and_create_custom_dataframe(-58.737, -29.025, 7, 5, 76, 90, "MAIZE", {"name": "SYN897"})
   custom_df = get_and_create_custom_dataframe(-58.737, -29.025, 5.0, 10.0, 30.0, 80)
+=======
+  # custom_df = get_and_create_custom_dataframe(-58.737, -29.025, 7, 5, 76, 90) #[['0', 0], ['1', 12], ['2', 13], ['3', 13], ['4', 17], ['5', 21], ['6', 22], ['7', 26], ['8', 29], ['9', 33], ['10', 35], ['11', 36], ['12', 36]] # "MAIZE", {"name": "SYN897"}
+  # # scatter_crop_development(custom_df, 'scatter_plot_v1.png')
+  # print(custom_df)
+  # custom_df = get_and_create_custom_dataframe(-58.737, -29.025, 5.0, 10.0, 30.0,80) # [['0', 0], ['2', 11], ['3', 14], ['4', 16], ['5', 20], ['6', 22], ['7', 26], ['8', 27], ['9', 30], ['10', 36], ['11', 36], ['12', 40]]
+  # # scatter_crop_development(custom_df, 'scatter_plot_v2.png')
+  # print(custom_df)
+  # # custom_df = get_and_create_custom_dataframe(-58.737, -29.025, 1, 4, 20,100)
+  # # custom_df = get_and_create_custom_dataframe(-58.737, -29.025, 5.0, 10.0, 80.0,80)
+  # # custom_df = get_and_create_custom_dataframe( 47.06492,4.41768, 5.0, 10.0, 30.0,80) # [['0', 0], ['2', 11], ['3', 14], ['4', 16], ['5', 20], ['6', 22], ['7', 26], ['8', 27], ['9', 30], ['10', 36], ['11', 36], ['12', 40]]
+  # # scatter_crop_development(custom_df, 'scatter_plot_v3.png')
+  # # print(custom_df)
+  #
+  # # custom_df = get_and_create_custom_dataframe(-58.737, -29.025, 5.0, 4.0, 20.0, 10)
+  #
+  #
+  # custom_df = get_and_create_custom_dataframe(-58.737, -29.025, 5.0, 10.0, 30.0,80) # [['0', 0], ['2', 11], ['3', 14], ['4', 16], ['5', 20], ['6', 22], ['7', 26], ['8', 27], ['9', 30], ['10', 36], ['11', 36], ['12', 40]]
+  # # scatter_crop_development(custom_df, 'scatter_plot_v4.png')
+  # print(custom_df)
+
+
+  custom_df = get_and_create_custom_dataframe(-58.737, -29.025, 9.0, 14.0, 100.0,100)
+  # scatter_crop_development(custom_df, 'scatter_plot_v5.png')
+  print(custom_df)
+
+>>>>>>> Stashed changes
   # long, lat
   # depth_val  1.0 >= x <= 9.0 cm
   # density_val 4.0 >= x <= 14.0 plants/m2
