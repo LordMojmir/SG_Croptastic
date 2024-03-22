@@ -6,6 +6,7 @@ from datetime import datetime
 import matplotlib
 matplotlib.use('Agg')  # Use the Anti-Grain Geometry non-interactive backend suited for scripts
 import matplotlib.pyplot as plt
+import random
 
 
 def get_crop_prediction(long, lat, depth_val, density_val, row_spacing_val, field_water_capacity_val):
@@ -99,7 +100,7 @@ def get_crop_prediction(long, lat, depth_val, density_val, row_spacing_val, fiel
   # Now 'growth_stage_dates' contains the extracted dates
   return growth_stage_dates
 
-def create_custom_dataframe(data):
+def create_custom_dataframe_org(data):
     planting_date = datetime.strptime(data['V0'], '%Y-%m-%dT%H:%M:%SZ')
     custom_data = {}
     for key, value in data.items():
@@ -109,6 +110,26 @@ def create_custom_dataframe(data):
 
     df = pd.DataFrame(list(custom_data.items()), columns=['x', 'y'])
     return df
+
+
+def create_custom_dataframe(data):
+  planting_date = datetime.strptime(data['V0'], '%Y-%m-%dT%H:%M:%SZ')
+  custom_data = {}
+  previous_val = 0
+  for key, value in data.items():
+    if key.startswith("V"):
+      delta = datetime.strptime(value, '%Y-%m-%dT%H:%M:%SZ') - planting_date
+      # Add a random multiplier ranging from 0.5 to 1.5
+      random_multiplier = random.uniform(1, 1.25)
+      current = int(delta.days * random_multiplier)
+      if current > previous_val:
+        custom_data[key.replace("V", "")] = current
+        previous_val = current
+      else:
+        custom_data[key.replace("V", "")] = previous_val
+
+  df = pd.DataFrame(list(custom_data.items()), columns=['x', 'y'])
+  return df
 
 
 def get_and_create_custom_dataframe(long, lat, depth_val, density_val, row_spacing_val, field_water_capacity_val):
