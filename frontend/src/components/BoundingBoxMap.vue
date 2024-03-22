@@ -21,7 +21,6 @@ import ButtonComponent from "@/components/ButtonComponent.vue";
 
 const featureStore = useFeatureStore();
 const {geometry, coordinates, centre} = storeToRefs(featureStore);
-
 const handleDrawUpdate = ($event :any) => {
   const details = $event.detail;
   if (details.length > 0 && details[0].values_.geometry) {
@@ -33,7 +32,7 @@ const handleDrawUpdate = ($event :any) => {
 </script>
 <template>
   <div class="box">
-    <div class="flex">
+    <div class="flex" style="width: 100%">
       <h1>Choose your bounding box</h1>
 #        <ButtonComponent />
       <eox-drawtools
@@ -65,6 +64,7 @@ const handleDrawUpdate = ($event :any) => {
 }
 #primary {
   width: 50vw;
+  min-width: 1000px;
   height: 70vh;
   padding: 0.5rem;
 }
@@ -73,7 +73,7 @@ h1 {
   color: #fff;
     flex: 2;
     text-align: left;
-    font-size: 3rem;
+    font-size: 2.5rem;
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 0.15rem;

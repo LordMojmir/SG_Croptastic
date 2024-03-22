@@ -17,6 +17,7 @@
     "@fortawesome/vue-fontawesome": "^3.0.6",
     "@sentinel-hub/sentinelhub-js": "^0.4.7",
     "axios": "^1.6.8",
+    "chart.js": "^4.4.2",
     "d3": "^7.9.0",
     "ol": "^9.0.0",
     "pinia": "^2.1.7",

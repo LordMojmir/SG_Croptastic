@@ -13,8 +13,7 @@ const refParameters = storeToRefs(parametersStore);
 
 const geoDataStore = useFeatureStore();
 
-let data;
-
+const data = ref();
 const showPredictions = ref(false);
 
 async function getData(){
@@ -30,7 +29,7 @@ async function getData(){
     }
   });
   if(response.status == 200){
-    data = response.data;
+    data.value = response.data;
     showPredictions.value = true;
   }
 }
@@ -61,7 +60,7 @@ async function getData(){
       >Try it out!</button>
     </div>
   </div>
-  <GrowthPredictionGraph v-if="showPredictions" :data="data" ></GrowthPredictionGraph>
+  <GrowthPredictionGraph v-if="showPredictions" :data="data.value" ></GrowthPredictionGraph>
 
 </template>
 
