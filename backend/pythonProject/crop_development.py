@@ -72,7 +72,7 @@ def get_crop_prediction(long, lat, depth_val, density_val, row_spacing_val, fiel
           },
           "forecast": {
             "start_date": "2023-06-01T00:00:00Z",
-            "end_date": "2023-06-14T00:00:00Z"
+            "end_date": "2023-06-28T00:00:00Z"
           }
         }
       }
@@ -154,10 +154,9 @@ def scatter_crop_development(data):
 
 
 if __name__ == '__main__':
-<<<<<<< Updated upstream
+
   #custom_df = get_and_create_custom_dataframe(-58.737, -29.025, 7, 5, 76, 90, "MAIZE", {"name": "SYN897"})
   custom_df = get_and_create_custom_dataframe(-58.737, -29.025, 5.0, 10.0, 30.0, 80)
-=======
   # custom_df = get_and_create_custom_dataframe(-58.737, -29.025, 7, 5, 76, 90) #[['0', 0], ['1', 12], ['2', 13], ['3', 13], ['4', 17], ['5', 21], ['6', 22], ['7', 26], ['8', 29], ['9', 33], ['10', 35], ['11', 36], ['12', 36]] # "MAIZE", {"name": "SYN897"}
   # # scatter_crop_development(custom_df, 'scatter_plot_v1.png')
   # print(custom_df)
@@ -182,10 +181,8 @@ if __name__ == '__main__':
   # scatter_crop_development(custom_df, 'scatter_plot_v5.png')
   print(custom_df)
 
->>>>>>> Stashed changes
   # long, lat
   # depth_val  1.0 >= x <= 9.0 cm
   # density_val 4.0 >= x <= 14.0 plants/m2
   # row_spacing_val 20.0 >= x <= 100.0 cm
   # field_water_capacity_val 1 >= x <= 100 percentage
-  print(custom_df)
