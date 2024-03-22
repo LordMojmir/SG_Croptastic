@@ -7,10 +7,29 @@ from crop_development import get_and_create_custom_dataframe
 from potato_disease import get_potato_disease_risk
 from satellite_images import satellite_data
 from sustainability import get_biodiversity
+from flask_cors import CORS
 
 app = Flask(__name__)
 # app.config.from_object(__name__)
 CORS(app, resources={r'/': {'origins': '*'}})
+@app.route('/fetch_satellite_images', methods=['GET'])
+def fetch_satellite_images():
+    """
+    Flask route that handles requests to fetch satellite images.
+    """
+    # Extract 'dataset' and 'bbox' from the query parameters
+    dataset = request.args.get('dataset')
+    bbox = request.args.get('bbox')
+
+    # Input validation (simplified for demonstration)
+    if not dataset or not bbox:
+        return jsonify({"error": "Missing 'dataset' or 'bbox' query parameter"}), 400
+
+    # Call the satellite_data function
+    data = satellite_data(dataset, bbox)
+
+    # Return the fetched data
+    return jsonify(data)
 
 @app.route('/get_land_cover_percentages', methods=['GET'])
 def get_land_cover_percentages():

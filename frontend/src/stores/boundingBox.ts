@@ -10,7 +10,8 @@ export const useFeatureStore = defineStore('feature', {
         centre: [17.06667, 47.93333]
     }),
     actions: {
-        updateGeometry(newGeometry :any) {
+
+        updateGeometry(newGeometry:any) {
             this.geometry = newGeometry;
             this.coordinates = newGeometry.flatCoordinates;
             this.centre = findPolygonCenter(this.coordinates);
