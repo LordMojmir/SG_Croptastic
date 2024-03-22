@@ -1,7 +1,7 @@
 import json
-
 from flask import Flask, request, jsonify
 from sentinelhub import BBox, CRS
+from flask_cors import CORS, cross_origin
 
 from crop_development import get_and_create_custom_dataframe
 from potato_disease import get_potato_disease_risk
@@ -10,7 +10,8 @@ from sustainability import get_biodiversity
 from flask_cors import CORS
 
 app = Flask(__name__)
-cors = CORS(app)
+# app.config.from_object(__name__)
+CORS(app, resources={r'/': {'origins': '*'}})
 @app.route('/fetch_satellite_images', methods=['GET'])
 def fetch_satellite_images():
     """
@@ -30,14 +31,13 @@ def fetch_satellite_images():
     # Return the fetched data
     return jsonify(data)
 
-
 @app.route('/get_land_cover_percentages', methods=['GET'])
 def get_land_cover_percentages():
     """
     Flask route that takes a 'bbox' parameter and returns land cover label percentages.
     """
     # Extract 'bbox' from the query parameters and convert it to a tuple of tuples
-    #bbox = request.args.get('bbox')
+    # bbox = request.args.get('bbox')
     bbox = BBox([3.367310, 47.315620, 3.690033, 47.403041], crs=CRS.WGS84)
 
     # Call the get_land_cover_label_percentages function
@@ -66,7 +66,8 @@ def get_crop_development():
         print(long, lat, depth_val, density_val, row_spacing_val, field_water_capacity_val)
 
         # Call the function to get and create custom dataframe
-        data = get_and_create_custom_dataframe(long, lat, depth_val, density_val, row_spacing_val, field_water_capacity_val)
+        data = get_and_create_custom_dataframe(long, lat, depth_val, density_val, row_spacing_val,
+                                               field_water_capacity_val)
         print(data)
         # Return the data as JSON
         return jsonify({"crop_development_data": data})
@@ -75,6 +76,7 @@ def get_crop_development():
 
 
 @app.route('/get_potato_disease_risk', methods=['GET'])
+@cross_origin()
 def get_potato_disease_risk_route():
     """
     Flask route to get potato disease risk data.
@@ -94,6 +96,7 @@ def get_potato_disease_risk_route():
         return jsonify({"potato_disease_risk_data": result})
     except Exception as e:
         return jsonify({"error": str(e)}), 400
+
 
 if __name__ == '__main__':
     app.run(debug=True)

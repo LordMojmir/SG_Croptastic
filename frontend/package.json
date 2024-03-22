@@ -21,10 +21,14 @@
     "ol": "^9.0.0",
     "pinia": "^2.1.7",
     "vue": "^3.4.21",
-    "vue-router": "^4.3.0"
+    "vue-router": "^4.3.0",
+    "vue3-calendar-heatmap": "^2.0.5",
+    "vue3-charts": "^1.1.33",
+    "vue3-grid-layout-next": "^1.0.6"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.2",
+    "@types/d3": "^7.4.3",
     "@types/node": "^20.11.28",
     "@vitejs/plugin-vue": "^5.0.4",
     "@vue/tsconfig": "^0.5.1",
