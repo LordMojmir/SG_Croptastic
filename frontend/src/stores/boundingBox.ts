@@ -10,11 +10,11 @@ export const useFeatureStore = defineStore('feature', {
         centre: [17.06667, 47.93333]
     }),
     actions: {
-        updateGeometry(newGeometry) {
+        updateGeometry(newGeometry :any) {
             this.geometry = newGeometry;
             this.coordinates = newGeometry.flatCoordinates;
             this.centre = findPolygonCenter(this.coordinates);
-        },
+        }
     },
 });
 
@@ -33,7 +33,7 @@ function calculatePolygonCenter(coordsArray: number[]): [number, number] {
     return [centroid[0], centroid[1]]; // Returns [longitude, latitude]
 }
 
-function findPolygonCenter(coordsArray: number[]): Point {
+function findPolygonCenter(coordsArray: number[]): number[] {
     return calculatePolygonCenter(coordsArray);
 }
 
